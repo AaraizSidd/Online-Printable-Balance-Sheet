@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empower‑HR | Balance Sheet</title>
+
+  <!-- html2pdf for the PDF button -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    /* ----------  GENERAL LAYOUT  ---------- */
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(to bottom right,#e0eafc,#9a4fa9);
+      padding:20px;
+    }
+    #sheet{                 /* the box that prints / exports */
+      max-width:900px;
+      margin:0 auto;
+      background:#fff;
+      border-radius:12px;
+      box-shadow:0 6px 16px rgba(0,0,0,.15);
+      padding:32px;
+    }
+
+    /* ----------  HEADINGS  ---------- */
+    h1,h2,h3,h4{
+      margin:4px 0;
+      text-align:center;
+      color:#571f62;
+    }
+    h1{font-size:28px;}
+    h2{font-size:22px;}
+    h3{font-size:18px;}
+    h4{font-size:16px;}
+
+    /* ----------  TABLE STYLING  ---------- */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:16px;
+    }
+    thead td{
+      background:#571f62;
+      color:#fff;
+      font-weight:bold;
+      padding:10px;
+      border-radius:6px 6px 0 0;
+    }
+    tbody td, tfoot td{
+      padding:8px 12px;
+      border-bottom:1px solid #ddd;
+    }
+    tfoot td{
+      font-weight:bold;
+      background:#f6f2fc;
+    }
+    tr:hover td{background:#faf9fd;}
+
+    /* ----------  INPUTS  ---------- */
+    input[type="number"]{
+      width:110px;
+      padding:4px 6px;
+    }
+    input[type="text"]{
+      width:100%;
+      padding:4px 6px;
+    }
+
+    /* ----------  BUTTONS  ---------- */
+    .btn{
+      display:inline-block;
+      margin:8px 4px;
+      padding:8px 18px;
+      font-weight:600;
+      border:none;
+      border-radius:6px;
+      color:#fff;
+      background:#7a2e97;
+      cursor:pointer;
+    }
+    .btn:hover{background:#5c2172;}
+
+    .add-field-btn{width:100%;}
+
+    /* ----------  RESULT MESSAGE  ---------- */
+    #balanceCheck{
+      margin-top:28px;
+      font-size:20px;
+      font-weight:700;
+      text-align:center;
+    }
+    .balanced{color:green;}
+    .unbalanced{color:red;}
+
+    /* ----------  PRINT STYLES  ---------- */
+    @media print{
+      body{background:#fff;}
+      .no-print{display:none;}
+      #sheet{box-shadow:none;}
+    }
+  </style>
+</head>
+<body>
+
+  <!--  TOP TEXT (per your request)  -->
+  <h1>Empower‑HR</h1>
+  <h2>Balance Sheet</h2>
+  <h3>As of December 31, 2024</h3>
+  <h4>(All amounts in USD)</h4>
+  <h4><b>Muhammad Areez Sohail</b></h4>
+
+  <!--  MAIN SHEET  -->
+  <div id="sheet">
+
+    <!-- ======  CURRENT ASSETS  ====== -->
+    <table id="current-assets">
+      <thead><tr><td colspan="2">Current Assets</td></tr></thead>
+      <tbody>
+        <tr><td>Cash</td>          <td><input type="number" value="0"></td></tr>
+        <tr><td>Bank Accounts</td>       <td><input type="number" value="0"></td></tr>
+        <tr><td>Accounts Receivable</td> <td><input type="number" value="0"></td></tr>
+        <tr><td>Inventory</td>           <td><input type="number" value="0"></td></tr>
+        <tr><td>Prepaid Expenses</td>    <td><input type="number" value="0"></td></tr>
+
+        <!--  Add‑Field button row (always last in tbody)  -->
+        <tr><td colspan="2"><button class="btn add-field-btn" onclick="addField(this)">➕ Add Field</button></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total Current Assets</td><td id="total-current-assets">0</td></tr></tfoot>
+    </table>
+
+    <!-- ======  NON‑CURRENT / FIXED ASSETS  ====== -->
+    <table id="noncurrent-assets">
+      <thead><tr><td colspan="2">Non‑Current Assets</td></tr></thead>
+      <tbody>
+        <tr><td>Furniture</td>             <td><input type="number" value="0"></td></tr>
+        <tr><td>Vehicles</td>              <td><input type="number" value="0"></td></tr>
+        <tr><td>Machinery</td>             <td><input type="number" value="0"></td></tr>
+        <tr><td>Long‑Term Investments</td> <td><input type="number" value="0"></td></tr>
+        <tr><td>Intangible Assets</td>     <td><input type="number" value="0"></td></tr>
+
+        <tr><td colspan="2"><button class="btn add-field-btn" onclick="addField(this)">➕ Add Field</button></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total Non‑Current Assets</td><td id="total-noncurrent-assets">0</td></tr></tfoot>
+    </table>
+
+    <!-- ======  CURRENT LIABILITIES  ====== -->
+    <table id="current-liabilities">
+      <thead><tr><td colspan="2">Current Liabilities</td></tr></thead>
+      <tbody>
+        <tr><td>Accounts Payable</td>  <td><input type="number" value="0"></td></tr>
+        <tr><td>Accrued Expenses</td>  <td><input type="number" value="0"></td></tr>
+        <tr><td>Short‑Term Debits</td> <td><input type="number" value="0"></td></tr>
+
+        <tr><td colspan="2"><button class="btn add-field-btn" onclick="addField(this)">➕ Add Field</button></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total Current Liabilities</td><td id="total-current-liabilities">0</td></tr></tfoot>
+    </table>
+
+    <!-- ======  NON‑CURRENT LIABILITIES  ====== -->
+    <table id="noncurrent-liabilities">
+      <thead><tr><td colspan="2">Non‑Current Liabilities</td></tr></thead>
+      <tbody>
+        <tr><td>Loans</td>                   <td><input type="number" value="0"></td></tr>
+        <tr><td>Mortgage</td>                <td><input type="number" value="0"></td></tr>
+        <tr><td> Tax Liabilities</td><td><input type="number" value="0"></td></tr>
+
+        <tr><td colspan="2"><button class="btn add-field-btn" onclick="addField(this)">➕ Add Field</button></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total Non‑Current Liabilities</td><td id="total-noncurrent-liabilities">0</td></tr></tfoot>
+    </table>
+
+    <!-- ======  EQUITY  ====== -->
+    <table id="equity">
+      <thead><tr><td colspan="2">Equity</td></tr></thead>
+      <tbody>
+        <tr><td>Common Stock</td>        <td><input type="number" value="0"></td></tr>
+        <tr><td>Current Year Earnings</td><td><input type="number" value="0"></td></tr>
+        <tr><td>Investments</td>         <td><input type="number" value="0"></td></tr>
+        <tr><td>Retained Earnings</td>   <td><input type="number" value="0"></td></tr>
+
+        <tr><td colspan="2"><button class="btn add-field-btn" onclick="addField(this)">➕ Add Field</button></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total Equity</td><td id="total-equity">0</td></tr></tfoot>
+    </table>
+
+    <!-- ======  BALANCE CHECK MESSAGE  ====== -->
+    <div id="balanceCheck">Sheet not calculated yet.</div>
+  </div>
+
+  <!--  ACTION BUTTONS  -->
+  <div class="no-print" style="text-align:center;margin-top:24px;">
+    <button class="btn" onclick="window.print()">🖨️ Print</button>
+    <button class="btn" onclick="downloadPDF()">⬇️ Download PDF</button>
+  </div>
+
+  <!-- ----------  JAVASCRIPT  ---------- -->
+  <script>
+    /* Helper: sum NodeList of number inputs */
+    const sumInputs = nodeList =>
+      [...nodeList].reduce((sum, inp) => sum + Number(inp.value || 0), 0);
+
+    /* Main calculation function */
+    function calculateTotals(){
+      const totalCurrentAssets       = sumInputs(document.querySelectorAll('#current-assets tbody input[type="number"]'));
+      const totalNonCurrentAssets    = sumInputs(document.querySelectorAll('#noncurrent-assets tbody input[type="number"]'));
+      const totalCurrentLiabilities  = sumInputs(document.querySelectorAll('#current-liabilities tbody input[type="number"]'));
+      const totalNonCurrentLiabilities = sumInputs(document.querySelectorAll('#noncurrent-liabilities tbody input[type="number"]'));
+      const totalEquity              = sumInputs(document.querySelectorAll('#equity tbody input[type="number"]'));
+
+      /* Update table footers */
+      document.getElementById('total-current-assets').textContent        = totalCurrentAssets.toLocaleString();
+      document.getElementById('total-noncurrent-assets').textContent     = totalNonCurrentAssets.toLocaleString();
+      document.getElementById('total-current-liabilities').textContent   = totalCurrentLiabilities.toLocaleString();
+      document.getElementById('total-noncurrent-liabilities').textContent= totalNonCurrentLiabilities.toLocaleString();
+      document.getElementById('total-equity').textContent                = totalEquity.toLocaleString();
+
+      /* Balance check */
+      const totalAssets     = totalCurrentAssets + totalNonCurrentAssets;
+      const totalLiabilities= totalCurrentLiabilities + totalNonCurrentLiabilities;
+      const rightSide       = totalLiabilities + totalEquity;
+
+      const msg = document.getElementById('balanceCheck');
+      if(totalAssets === rightSide){
+        msg.textContent = "✅ Balanced (Assets = Liabilities + Equity)";
+        msg.className   = "balanced";
+      }else{
+        msg.textContent = `❌ Not Balanced (Assets: ${totalAssets.toLocaleString()} ≠ Liabilities + Equity: ${rightSide.toLocaleString()})`;
+        msg.className   = "unbalanced";
+      }
+    }
+
+    /* Add a new custom row */
+    function addField(btn){
+      const tbody     = btn.closest('tbody');
+      const buttonRow = btn.closest('tr');
+
+      /* New row with text + number inputs */
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td><input type="text" placeholder="New Field"></td>
+        <td><input type="number" value="0"></td>
+      `;
+      /* Insert above the button row so the Add Field button stays last */
+      tbody.insertBefore(newRow, buttonRow);
+
+      /* Bind calculation on new number input */
+      newRow.querySelector('input[type="number"]').addEventListener('input', calculateTotals);
+    }
+
+    /* Bind all existing number inputs */
+    document.querySelectorAll('input[type="number"]').forEach(inp =>
+      inp.addEventListener('input', calculateTotals)
+    );
+
+    /* Initial calculation */
+    calculateTotals();
+
+    /* Download as PDF (html2pdf) */
+    function downloadPDF(){
+      const opt = {
+        margin:0.5,
+        filename:'Balance_Sheet.pdf',
+        image:{type:'jpeg',quality:0.98},
+        html2canvas:{scale:2},
+        jsPDF:{unit:'in',format:'letter',orientation:'portrait'}
+      };
+      html2pdf().set(opt).from(document.getElementById('sheet')).save();
+    }
+  </script>
+</body>
+</html>
